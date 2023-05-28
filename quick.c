@@ -1,4 +1,12 @@
 
+void swap(int *a, int *b)
+{
+    int m;
+    m = *a;
+    *a = *b;
+    *b = m;
+}
+
 
 void partition (int *v[],int s, int e){
     int d = s;
