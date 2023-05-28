@@ -8,7 +8,7 @@ void swap(int *a, int *b)
 }
 
 
-void partition (int *v[],int s, int e){
+int partition (int *v[],int s, int e){
     int d = s;
     for (int i =0; i< (e-1); i++){
         if (v[i] < v[e]){
@@ -19,4 +19,12 @@ void partition (int *v[],int s, int e){
 
     }
     return d;
+}
+
+void quick_sort(int *v[], int s, int e){
+    if (s<e){
+        int p = partition (v,s,e);
+        quick_sort(v,s,p-1);
+        quick_sort(v,s+1,e);
+    }
 }
