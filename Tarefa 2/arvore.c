@@ -18,43 +18,43 @@ No* criarNo(int valor) {
 }
 
 // Função para inserir um valor na árvore
-No* inserir(No* raiz, int valor) {
-    if (raiz == NULL) {
+No* inserir(No* root, int valor) {
+    if (root == NULL) {
         return criarNo(valor);
     } else {
-        if (valor <= raiz->valor) {
-            raiz->esquerda = inserir(raiz->esquerda, valor);
+        if (valor <= root->valor) {
+            root->esquerda = inserir(root->esquerda, valor);
         } else {
-            raiz->direita = inserir(raiz->direita, valor);
+            root->direita = inserir(root->direita, valor);
         }
-        return raiz;
+        return root;
     }
 }
 
 // Função para percorrer a árvore em ordem (in-order traversal)
-void percorrer(No* raiz) {
-    if (raiz != NULL) {
-        percorrer(raiz->esquerda);
-        printf("%d ", raiz->valor);
-        percorrer(raiz->direita);
+void percorrer(No* root) {
+    if (root != NULL) {
+        percorrer(root->esquerda);
+        printf("%d ", root->valor);
+        percorrer(root->direita);
     }
 }
 
 int main() {
-    No* raiz = NULL;
+    No* root = NULL;
 
     // Exemplo de inserção de valores na árvore
-    raiz = inserir(raiz, 10);
-    raiz = inserir(raiz, 30);
-    raiz = inserir(raiz, 70);
-    raiz = inserir(raiz, 20);
-    raiz = inserir(raiz, 40);
-    raiz = inserir(raiz, 60);
-    raiz = inserir(raiz, 80);
+    root = inserir(root, 50);
+    root = inserir(root, 30);
+    root = inserir(root, 70);
+    root = inserir(root, 20);
+    root = inserir(root, 40);
+    root = inserir(root, 60);
+    root = inserir(root, 80);
 
     // Exemplo de percorrimento da árvore em ordem
     printf("Árvore em ordem: ");
-    percorrer(raiz);
+    percorrer(root);
     printf("\n");
 
     return 0;
