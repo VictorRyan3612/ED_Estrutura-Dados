@@ -45,28 +45,6 @@ void percorrer(No* root) {
 }
 
 
-// Função para imprimir a árvore de forma visual
-void visualizarArvore(No* root, int nivel) {
-    if (root == NULL) {
-        return;
-    }
-
-    nivel += 4;
-
-    visualizarArvore(root->direita, nivel);
-
-    printf("\n");
-
-    for (int i = 4; i < nivel; i++) {
-        printf(" ");
-    }
-
-    printf("%d(%d)\n", root->valor,nivel/4);
-
-    visualizarArvore(root->esquerda, nivel);
-}
-
-
 // Função para inserir valores aleatórios na árvore
 No* inserirAleatorio(No* root, int quantidade, int valorMaximo) {
     srand(time(NULL)); // Inicializa a semente do gerador de números aleatórios
@@ -79,23 +57,16 @@ No* inserirAleatorio(No* root, int quantidade, int valorMaximo) {
     return root;
 }
 
-void executararvore(int n ) {
+
+No* executararvore(int n) {
     No* root = NULL;
 
-    // Inserir 10 valores aleatórios na árvore, com valores entre 1 e 100
+    // Inserir n valores aleatórios na árvore, com valores entre 1 e 100
     root = inserirAleatorio(root, n, 100);
-
-//     // Exemplo de percorrimento da árvore em ordem
-//     printf("Árvore em ordem: ");
-//     percorrer(root);
-//     printf("\n");
-
-
-// // Exemplo de visualização da árvore completa
-//     printf("Árvore completa:\n");
-//     visualizarArvore(root, 0);
-
 }
+
+
+
 int main(int argc, char const *argv[]) {
     struct timespec a, b;
     unsigned int t, n;
@@ -104,7 +75,7 @@ int main(int argc, char const *argv[]) {
     n = atoi(argv[1]);
 
     clock_gettime(CLOCK_MONOTONIC, &b);
-
+    
     executararvore(n); // Execução da árvore
 
     clock_gettime(CLOCK_MONOTONIC, &a);
