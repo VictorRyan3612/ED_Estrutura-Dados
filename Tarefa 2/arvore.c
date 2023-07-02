@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 
+#define CLOCK_MONOTONIC 1
+
+
 // Estrutura de um nó da árvore
 typedef struct No {
     int valor;
@@ -76,20 +79,39 @@ No* inserirAleatorio(No* root, int quantidade, int valorMaximo) {
     return root;
 }
 
-int main() {
+void executararvore(int n ) {
     No* root = NULL;
 
     // Inserir 10 valores aleatórios na árvore, com valores entre 1 e 100
-    root = inserirAleatorio(root, 10, 100);
+    root = inserirAleatorio(root, n, 100);
 
-    // Exemplo de percorrimento da árvore em ordem
-    printf("Árvore em ordem: ");
-    percorrer(root);
-    printf("\n");
+//     // Exemplo de percorrimento da árvore em ordem
+//     printf("Árvore em ordem: ");
+//     percorrer(root);
+//     printf("\n");
 
 
-// Exemplo de visualização da árvore completa
-    printf("Árvore completa:\n");
-    visualizarArvore(root, 0);
+// // Exemplo de visualização da árvore completa
+//     printf("Árvore completa:\n");
+//     visualizarArvore(root, 0);
+
+}
+int main(int argc, char const *argv[]) {
+    struct timespec a, b;
+    unsigned int t, n;
+    int i;
+
+    n = atoi(argv[1]);
+
+    clock_gettime(CLOCK_MONOTONIC, &b);
+
+    executararvore(n); // Execução da árvore
+
+    clock_gettime(CLOCK_MONOTONIC, &a);
+
+    t = (a.tv_sec * 1e9 + a.tv_nsec) - (b.tv_sec * 1e9 + b.tv_nsec);
+
+    printf("%u\n", t);
+
     return 0;
 }
