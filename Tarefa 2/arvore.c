@@ -41,6 +41,29 @@ void percorrer(No* root) {
     }
 }
 
+
+// Função para imprimir a árvore de forma visual
+void visualizarArvore(No* root, int nivel) {
+    if (root == NULL) {
+        return;
+    }
+
+    nivel += 4;
+
+    visualizarArvore(root->direita, nivel);
+
+    printf("\n");
+
+    for (int i = 4; i < nivel; i++) {
+        printf(" ");
+    }
+
+    printf("%d(%d)\n", root->valor,nivel/4);
+
+    visualizarArvore(root->esquerda, nivel);
+}
+
+
 // Função para inserir valores aleatórios na árvore
 No* inserirAleatorio(No* root, int quantidade, int valorMaximo) {
     srand(time(NULL)); // Inicializa a semente do gerador de números aleatórios
@@ -64,5 +87,9 @@ int main() {
     percorrer(root);
     printf("\n");
 
+
+// Exemplo de visualização da árvore completa
+    printf("Árvore completa:\n");
+    visualizarArvore(root, 0);
     return 0;
 }
