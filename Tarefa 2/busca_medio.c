@@ -46,24 +46,28 @@ void percorrer(No* root) {
 
 
 // Função para inserir valores aleatórios na árvore
-No* inserirAleatorio(No* root, int quantidade, int valorMaximo) {
+No* inserirAleatorio(No* root, int quantidade, int valorMaximo, int valorBuscado) {
     srand(time(NULL)); // Inicializa a semente do gerador de números aleatórios
 
-    for (int i = 0; i < quantidade-1; i++) {
-        int valor = rand() % valorMaximo + 1; // Gera um número aleatório entre 1 e valorMaximo
-        root = inserir(root, valor);
-    }
-    
+    for (int i = 0; i < quantidade; i++) {
+        if (i == valorBuscado){
+            root = inserir(root, valorBuscado);
+        }
 
+        else{
+            int valor = rand() % valorMaximo + 1; // Gera um número aleatório entre 1 
+            root = inserir(root, valor);
+        }
+    }
     return root;
 }
 
 
-No* executararvore(int n) {
+No* executararvore(int n, int valorBuscado) {
     No* root = NULL;
 
     // Inserir n valores aleatórios na árvore, com valores entre 1 e 100
-    root = inserirAleatorio(root, n, 100);
+    root = inserirAleatorio(root, n, 100, valorBuscado);
     return root;
 }
 
@@ -72,6 +76,17 @@ No* buscaPrimeiroValor(No* root){
     return root;
 }
 
+No* buscaValor(No* root, int valorBuscado) {
+    if (root == NULL || root->valor == valorBuscado) {
+        return root;
+    }
+    
+    if (valorBuscado < root->valor) {
+        return buscaValor(root->esquerda, valorBuscado);
+    } else {
+        return buscaValor(root->direita, valorBuscado);
+    }
+}
 
 int main(int argc, char const *argv[]) {
     struct timespec a, b;
@@ -81,12 +96,12 @@ int main(int argc, char const *argv[]) {
     No* root = NULL;
 
     n = atoi(argv[1]);
-    int valorBuscado = 42;
+    int valorBuscado = rand() % 100;
 
-    root = executararvore(n); // Execução da árvore
+    root = executararvore(n, valorBuscado); // Execução da árvore
 
     clock_gettime(CLOCK_MONOTONIC, &b);
-
+    buscaValor(root, valorBuscado);
     clock_gettime(CLOCK_MONOTONIC, &a);
 
     t = (a.tv_sec * 1e9 + a.tv_nsec) - (b.tv_sec * 1e9 + b.tv_nsec);
