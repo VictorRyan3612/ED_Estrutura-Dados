@@ -4,38 +4,104 @@
 
 #define CLOCK_MONOTONIC 1
 
-
-// Estrutura de um nó da árvore
 typedef struct No {
     int valor;
     struct No* esquerda;
     struct No* direita;
+    int altura;
 } No;
 
-// Função para criar um novo nó
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+
+int altura(No* root) {
+    if (root == NULL) {
+        return 0;
+    }
+    return root->altura;
+}
+
 No* criarNo(int valor) {
     No* novoNo = (No*)malloc(sizeof(No));
     novoNo->valor = valor;
     novoNo->esquerda = NULL;
     novoNo->direita = NULL;
+    novoNo->altura = 1;
     return novoNo;
 }
 
-// Função para inserir um valor na árvore
+No* rotacaoDireita(No* y) {
+    No* x = y->esquerda;
+    No* T2 = x->direita;
+
+    x->direita = y;
+    y->esquerda = T2;
+
+    y->altura = max(altura(y->esquerda), altura(y->direita)) + 1;
+    x->altura = max(altura(x->esquerda), altura(x->direita)) + 1;
+
+    return x;
+}
+
+No* rotacaoEsquerda(No* x) {
+    No* y = x->direita;
+    No* T2 = y->esquerda;
+
+    y->esquerda = x;
+    x->direita = T2;
+
+    x->altura = max(altura(x->esquerda), altura(x->direita)) + 1;
+    y->altura = max(altura(y->esquerda), altura(y->direita)) + 1;
+
+    return y;
+}
+
+int fatorBalanceamento(No* root) {
+    if (root == NULL) {
+        return 0;
+    }
+    return altura(root->esquerda) - altura(root->direita);
+}
+
 No* inserir(No* root, int valor) {
     if (root == NULL) {
         return criarNo(valor);
-    } else {
-        if (valor <= root->valor) {
-            root->esquerda = inserir(root->esquerda, valor);
-        } else {
-            root->direita = inserir(root->direita, valor);
-        }
-        return root;
     }
+
+    if (valor < root->valor) {
+        root->esquerda = inserir(root->esquerda, valor);
+    } else if (valor > root->valor) {
+        root->direita = inserir(root->direita, valor);
+    } else {
+        return root; // Não permite valores duplicados
+    }
+
+    root->altura = 1 + max(altura(root->esquerda), altura(root->direita));
+
+    int balanceamento = fatorBalanceamento(root);
+
+    if (balanceamento > 1 && valor < root->esquerda->valor) {
+        return rotacaoDireita(root);
+    }
+
+    if (balanceamento < -1 && valor > root->direita->valor) {
+        return rotacaoEsquerda(root);
+    }
+
+    if (balanceamento > 1 && valor > root->esquerda->valor) {
+        root->esquerda = rotacaoEsquerda(root->esquerda);
+        return rotacaoDireita(root);
+    }
+
+    if (balanceamento < -1 && valor < root->direita->valor) {
+        root->direita = rotacaoDireita(root->direita);
+        return rotacaoEsquerda(root);
+    }
+
+    return root;
 }
 
-// Função para percorrer a árvore em ordem (in-order traversal)
 void percorrer(No* root) {
     if (root != NULL) {
         percorrer(root->esquerda);
@@ -44,64 +110,60 @@ void percorrer(No* root) {
     }
 }
 
-
-// Função para inserir valores aleatórios na árvore
-No* inserirAleatorio(No* root, int quantidade, int valorMaximo, int valorBuscado) {
-    srand(time(NULL)); // Inicializa a semente do gerador de números aleatórios
+No* inserirAleatorio(No* root, int quantidade, int valorMaximo) {
+    srand(time(NULL));
 
     for (int i = 0; i < quantidade; i++) {
-        if (i == valorBuscado){
-            root = inserir(root, valorBuscado);
-        }
-
-        else{
-            int valor = rand() % valorMaximo + 1; // Gera um número aleatório entre 1 
-            root = inserir(root, valor);
-        }
+        int valor = rand() % valorMaximo + 1;
+        root = inserir(root, valor);
     }
+
     return root;
 }
 
-
-No* executararvore(int n, int valorBuscado) {
+No* executarArvore(int n) {
     No* root = NULL;
-
-    // Inserir n valores aleatórios na árvore, com valores entre 1 e 100
-    root = inserirAleatorio(root, n, 100, valorBuscado);
+    root = inserirAleatorio(root, n, 100);
     return root;
 }
 
-
-No* buscaPrimeiroValor(No* root){
+No* buscaPrimeiroValor(No* root) {
     return root;
 }
+// Função para imprimir a árvore de forma visual
+void visualizarArvore(No* root, int nivel) {
+    if (root == NULL) {
+        return;
+    }
 
-No* buscaValor(No* root, int valorBuscado) {
-    if (root == NULL || root->valor == valorBuscado) {
-        return root;
+    nivel += 4;
+
+    visualizarArvore(root->direita, nivel);
+
+    printf("\n");
+
+    for (int i = 4; i < nivel; i++) {
+        printf(" ");
     }
-    
-    if (valorBuscado < root->valor) {
-        return buscaValor(root->esquerda, valorBuscado);
-    } else {
-        return buscaValor(root->direita, valorBuscado);
-    }
+
+    printf("%d(%d)\n", root->valor,nivel/4);
+
+    visualizarArvore(root->esquerda, nivel);
 }
-
-int main(int argc, char const *argv[]) {
+// int main(int argc, char const *argv[]) {
+int main(){
     struct timespec a, b;
     unsigned int t, n;
-    int i;
-    
+
     No* root = NULL;
 
-    n = atoi(argv[1]);
-    int valorBuscado = 200;
+    // n = atoi(argv[1]);
 
-    root = executararvore(n, valorBuscado); // Execução da árvore
+    root = executarArvore(10);
 
     clock_gettime(CLOCK_MONOTONIC, &b);
-    buscaValor(root, valorBuscado);
+    printf("Árvore completa:\n");
+    visualizarArvore(root, 0);
     clock_gettime(CLOCK_MONOTONIC, &a);
 
     t = (a.tv_sec * 1e9 + a.tv_nsec) - (b.tv_sec * 1e9 + b.tv_nsec);
