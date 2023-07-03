@@ -156,7 +156,17 @@ void visualizarArvore(No* root, int nivel) {
     visualizarArvore(root->esquerda, nivel);
 }
 
-
+No* buscaValor(No* root, int valorBuscado) {
+    if (root == NULL || root->valor == valorBuscado) {
+        return root;
+    }
+    
+    if (valorBuscado < root->valor) {
+        return buscaValor(root->esquerda, valorBuscado);
+    } else {
+        return buscaValor(root->direita, valorBuscado);
+    }
+}
 
 
 int main(int argc, char const *argv[]) {
@@ -166,7 +176,7 @@ int main(int argc, char const *argv[]) {
     No* root = NULL;
     
     n = atoi(argv[1]);
-    int valorBuscado = 200;
+    int valorBuscado = rand() % 100;
     
     root = executarArvore(n, valorBuscado);
 
