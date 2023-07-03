@@ -155,14 +155,15 @@ int main(int argc, char const *argv[]) {
     unsigned int t, n;
 
     No* root = NULL;
-
+    No* primeiroroot = NULL;
+    
     n = atoi(argv[1]);
 
     
+    root = executarArvore(n);
 
     clock_gettime(CLOCK_MONOTONIC, &b);
-
-    root = executarArvore(n);
+    primeiroroot = buscaPrimeiroValor(root);
     clock_gettime(CLOCK_MONOTONIC, &a);
     
     // printf("Árvore completa:\n");
