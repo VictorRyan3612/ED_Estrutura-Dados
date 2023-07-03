@@ -110,20 +110,25 @@ void percorrer(No* root) {
     }
 }
 
-No* inserirAleatorio(No* root, int quantidade, int valorMaximo) {
-    srand(time(NULL));
+No* inserirAleatorio(No* root, int quantidade, int valorMaximo, int valorBuscado) {
+    srand(time(NULL)); // Inicializa a semente do gerador de números aleatórios
 
     for (int i = 0; i < quantidade; i++) {
-        int valor = rand() % valorMaximo + 1;
-        root = inserir(root, valor);
-    }
+        if (i == valorBuscado){
+            root = inserir(root, valorBuscado);
+        }
 
+        else{
+            int valor = rand() % valorMaximo + 1; // Gera um número aleatório entre 1 
+            root = inserir(root, valor);
+        }
+    }
     return root;
 }
 
-No* executarArvore(int n) {
+No* executarArvore(int n, int valorBuscado) {
     No* root = NULL;
-    root = inserirAleatorio(root, n, 100);
+    root = inserirAleatorio(root, n, 100, valorBuscado);
     return root;
 }
 
@@ -150,20 +155,33 @@ void visualizarArvore(No* root, int nivel) {
 
     visualizarArvore(root->esquerda, nivel);
 }
+
+No* buscaValor(No* root, int valorBuscado) {
+    if (root == NULL || root->valor == valorBuscado) {
+        return root;
+    }
+    
+    if (valorBuscado < root->valor) {
+        return buscaValor(root->esquerda, valorBuscado);
+    } else {
+        return buscaValor(root->direita, valorBuscado);
+    }
+}
+
+
 int main(int argc, char const *argv[]) {
     struct timespec a, b;
     unsigned int t, n;
 
     No* root = NULL;
-    No* primeiroroot = NULL;
     
     n = atoi(argv[1]);
-
+    int valorBuscado = 200;
     
-    root = executarArvore(n);
+    root = executarArvore(n, valorBuscado);
 
     clock_gettime(CLOCK_MONOTONIC, &b);
-    primeiroroot = buscaPrimeiroValor(root);
+    buscaValor(root, valorBuscado);
     clock_gettime(CLOCK_MONOTONIC, &a);
     
     // printf("Árvore completa:\n");
