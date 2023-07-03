@@ -1,0 +1,9 @@
+100 77.96 0.7796 90 100 100 avl-busca-melhor-100-100.txt
+200 77.02 0.7702 90 100 100 avl-busca-melhor-100-200.txt
+300 78.36 0.7836 90 100 100 avl-busca-melhor-100-300.txt
+400 78.87 0.7887 90 100 100 avl-busca-melhor-100-400.txt
+500 79.01 0.7901 91 100 100 avl-busca-melhor-100-500.txt
+600 75.99 0.7599 90 100 100 avl-busca-melhor-100-600.txt
+700 83.75 0.8375 91 100 100 avl-busca-melhor-100-700.txt
+800 74.36 0.7436 90 100 100 avl-busca-melhor-100-800.txt
+900 86.28 0.8628 90 100 100 avl-busca-melhor-100-900.txt
