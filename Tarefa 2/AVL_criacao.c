@@ -150,21 +150,23 @@ void visualizarArvore(No* root, int nivel) {
 
     visualizarArvore(root->esquerda, nivel);
 }
-// int main(int argc, char const *argv[]) {
-int main(){
+int main(int argc, char const *argv[]) {
     struct timespec a, b;
     unsigned int t, n;
 
     No* root = NULL;
 
-    // n = atoi(argv[1]);
+    n = atoi(argv[1]);
 
-    root = executarArvore(10);
+    
 
     clock_gettime(CLOCK_MONOTONIC, &b);
-    printf("Árvore completa:\n");
-    visualizarArvore(root, 0);
+
+    root = executarArvore(n);
     clock_gettime(CLOCK_MONOTONIC, &a);
+    
+    // printf("Árvore completa:\n");
+    // visualizarArvore(root, 0); 
 
     t = (a.tv_sec * 1e9 + a.tv_nsec) - (b.tv_sec * 1e9 + b.tv_nsec);
 
